@@ -1,33 +1,33 @@
 from setuptools import setup
 
 setup(
-    name="electrum-ltc-server",
+    name="electrum-mxt-server",
     version="1.0",
-    scripts=['run_electrum_ltc_server.py','electrum-ltc-server'],
+    scripts=['run_electrum_mxt_server.py','electrum-mxt-server'],
     install_requires=['plyvel','jsonrpclib', 'irc>=11'],
     package_dir={
-        'electrumltcserver':'src'
+        'electrummxtserver':'src'
         },
     py_modules=[
-        'electrumltcserver.__init__',
-        'electrumltcserver.utils',
-        'electrumltcserver.storage',
-        'electrumltcserver.deserialize',
-        'electrumltcserver.networks',
-        'electrumltcserver.blockchain_processor',
-        'electrumltcserver.server_processor',
-        'electrumltcserver.processor',
-        'electrumltcserver.version',
-        'electrumltcserver.ircthread',
-        'electrumltcserver.stratum_tcp',
-        'electrumltcserver.stratum_http'
+        'electrummxtserver.__init__',
+        'electrummxtserver.utils',
+        'electrummxtserver.storage',
+        'electrummxtserver.deserialize',
+        'electrummxtserver.networks',
+        'electrummxtserver.blockchain_processor',
+        'electrummxtserver.server_processor',
+        'electrummxtserver.processor',
+        'electrummxtserver.version',
+        'electrummxtserver.ircthread',
+        'electrummxtserver.stratum_tcp',
+        'electrummxtserver.stratum_http'
     ],
-    description="Litecoin Electrum Server",
+    description="MarteXcoin Electrum Server",
     author="Thomas Voegtlin",
     author_email="thomasv1@gmx.de",
     license="GNU Affero GPLv3",
-    url="https://github.com/pooler/electrum-ltc-server/",
-    long_description="""Server for the Electrum Lightweight Litecoin Wallet"""
+    url="https://github.com/martexcoin/electrum-mxt-server/",
+    long_description="""Server for the Electrum Lightweight MarteXcoin Wallet"""
 )
 
 
