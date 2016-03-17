@@ -33,7 +33,7 @@ pruning_limit = 100
 
 [bitcoind]
 bitcoind_host = localhost
-bitcoind_port = 9332
+bitcoind_port = 51324
 # user and password from martexcoin.conf
 bitcoind_user = 
 bitcoind_password = 
