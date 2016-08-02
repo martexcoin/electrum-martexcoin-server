@@ -1,8 +1,12 @@
-Electrum-server for the Electrum client
-=========================================
+![Electrum-MarteXcoin-Server](https://raw.githubusercontent.com/martexcoin/electrum-martexcoin-server/master/martexcoin.png)
 
-  * Author: Thomas Voegtlin (ThomasV on the bitcointalk forum)
+electrum-martexcoin-server for the electrum martexcoin client
+---------
+
+  * Author: Thomas Voegtlin (Bitcoin Electrum Creator) & Marciano Valverde (MarteXcoin Fork)
   * Language: Python
+
+## MarteXcoin Homepage: http://martexcoin.org/
 
 Features
 --------
@@ -11,15 +15,10 @@ Features
     described by Alan Reiner (see the 'ultimate blockchain
     compression' thread in the Bitcointalk forum)
 
-  * The server requires martexcoind, leveldb and plyvel
+  * The server requires martexcoind v2.5.4.2 or above, leveldb and plyvel
 
   * The server code is open source. Anyone can run a server, removing
     single points of failure concerns.
-
-  * The server knows which set of MarteXcoin addresses belong to the same
-    wallet, which might raise concerns about anonymity. However, it
-    should be possible to write clients capable of using several
-    servers.
 
 Installation
 ------------
@@ -27,7 +26,7 @@ Installation
   1. To install and run a server, see INSTALL. For greater
      detail on the installation process, see HOWTO.md.
 
-  2. To start and stop the server, use the 'electrum-mxt-server' script
+  2. To start and stop the server, use the 'electrum-martexcoin-server' script
 
 
 

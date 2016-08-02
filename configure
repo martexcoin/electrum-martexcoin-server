@@ -11,7 +11,7 @@ fi
 source_dir=$(cd "$(dirname "${BASH_SOURCE[0]}" )"; pwd)
 
 
-electrum_config="/etc/electrum-mxt.conf"
+electrum_config="/etc/electrum-martexcoin.conf"
 function read_config()
 {
     text=$1
@@ -25,7 +25,7 @@ function write_config()
 # create config file
 if [ ! -f $electrum_config ]; then
     echo "Creating config file"
-    cp $source_dir"/electrum-mxt.conf.sample" $electrum_config
+    cp $source_dir"/electrum-martexcoin.conf.sample" $electrum_config
 fi
 
 
@@ -52,7 +52,7 @@ fi
 
 
 # read path from config
-default_path="/var/electrum-mxt-server"
+default_path="/var/electrum-martexcoin-server"
 path=$(read_config "path")
 if ! [ "$path" ]; then
     read -p "Path for database (default: $default_path) " -r
@@ -65,7 +65,7 @@ if ! [ "$path" ]; then
 fi
 
 # read path from config
-default_logfile="/var/log/electrum-mxt.log"
+default_logfile="/var/log/electrum-martexcoin.log"
 logfile=$(read_config "logfile")
 if ! [ "$logfile" ]; then
     read -p "Path of logfile (default: $default_logfile) " -r
@@ -91,7 +91,7 @@ if [ ! -d $path ]; then
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
 	mkdir -p $path
-	wget -O - "http://foundry.electrum-mxt.org/leveldb-dump/electrum-fulltree-100-latest.tar.gz" | tar --extract --gunzip --strip-components 1 --directory $path --file -
+	wget -O - "http://www.martexcoin.org/leveldb-dump/electrum-fulltree-100-latest.tar.gz" | tar --extract --gunzip --strip-components 1 --directory $path --file -
     fi
 fi
 
@@ -124,4 +124,4 @@ fi
 echo "Configuration written to $electrum_config."
 echo "Please edit this file to finish the configuration."
 echo "If you have not done so, please run 'python setup.py install'"
-echo "Then, run 'electrum-mxt-server' to start the daemon"
+echo "Then, run 'electrum-martexcoin-server' to start the daemon"

@@ -3,14 +3,17 @@ detailed information on how to configure your server.
 
 
 TLDR:
+# sudo apt-get install git
+# sudo git clone https://github.com/martexcoin/electrum-martexcoin-server
+# sudo apt-get install libleveldb-dev
 # sudo ./configure
 # sudo python ./setup.py install
-# electrum-mxt-server start
-# electrum-mxt-server stop
+# electrum-martexcoin-server start
+# electrum-martexcoin-server stop
 
 
 Note: If you want to run the server without installing it on your
-system, just run 'run_electrum_mxt_server"
+system, just run 'run_electrum_martexcoin_server"
 
 
 1. Install and run martexcoind.
@@ -20,7 +23,8 @@ You will need to run martexcoind with the config option txindex=1. If you
 have not previously done so, you may need to reindex the martexcoind
 blockchain
 
-Note: you cannot use a pruning martexcoind (possible since 0.11).  A full martexcoin node is required in order to know for each
+Note: you cannot use a ultra-pruning martexcoind (forthcoming in 0.9 or
+later).  A full martexcoin node is required in order to know for each
 address if it has been used. Pruning occurs only at the level of the
 Electrum database.
 
@@ -32,14 +36,14 @@ You need to run the script as root:
 # sudo ./configure
 
 It will:
- * create the configuration file in /etc/electrum-mxt.conf
+ * create the configuration file in /etc/electrum-martexcoin.conf
  * create a user that will run the daemon
- * optionally, download a fresh database from the Electrum-MXT Foundry.
+ * optionally, download a fresh database from the Electrum-MarteXcoin Foundry.
 
 If you choose not to use the Foundry, your server will have to build
 the database from scratch. This process can take several days. To
 speed it up, it is recommended to locate your database in shared
-memory, in electrum-mxt.conf: path = /run/shm/electrum-mxt_db
+memory, in electrum-martexcoin.conf: path = /run/shm/electrum-martexcoin_db
 
 Note: The 'configure' script does not configure SSL and IRC. You will
 need to manually edit the configuration file in order to enable SSL on
@@ -57,23 +61,23 @@ Note: You will need to redo this everytime you pull code from git.
 4. Using the server
 -------------------
 
-Use 'electrum-mxt-server' to start and stop the server:
+Use 'electrum-martexcoin-server' to start and stop the server:
 
-# electrum-mxt-server <start|stop|status|getinfo>
+# electrum-martexcoin-server <start|stop|status|getinfo>
 
 The server will write a log file in its database path.
 
 
-5. Add electrum-mxt-server to your system's services
+5. Add electrum-martexcoin-server to your system's services
 ----------------------------------------------------
 
-If your system supports it, you may add electrum-mxt-server to the
+If your system supports it, you may add electrum-martexcoin-server to the
 /etc/init.d directory. This will ensure that the server is started and
 stopped automatically, and that the database is closed safely whenever
 your machine is rebooted.
 
-# ln -s `which electrum-mxt-server` /etc/init.d/electrum-mxt-server
-# update-rc.d electrum-mxt-server defaults
+# ln -s `which electrum-martexcoin-server` /etc/init.d/electrum-martexcoin-server
+# update-rc.d electrum-martexcoin-server defaults
 
 
 
