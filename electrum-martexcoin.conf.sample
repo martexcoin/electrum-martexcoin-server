@@ -17,17 +17,17 @@ irc_nick = electrum-martexcoin
 #ssl_certfile = /path/to/electrum-server.crt
 #ssl_keyfile = /path/to/electrum-server.key
 logfile = /var/log/electrum-martexcoin.log
-donation_address = PERu7znBafHURsxR749mQ2Teu6E8j95mct
+donation_address = MLtkuwyR61xEkWkt7KLCnDd4qTCyzoAMS3
 
 [leveldb]
 # path to your database
-path = /var/www/html
+path = /var/electrum-martexcoin-server
 # for each address, history will be pruned if it is longer than this limit
 pruning_limit = 10000
 
 [bitcoind]
 bitcoind_host = localhost
-bitcoind_port = 59060
+bitcoind_port = 51324
 # user and password from martexcoin.conf
 bitcoind_user = test
 bitcoind_password = password
