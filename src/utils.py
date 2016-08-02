@@ -21,16 +21,14 @@ import threading
 import time
 import hashlib
 import sys
-import mxt_hash as mxthash
 
 __b58chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 __b58base = len(__b58chars)
 
 global PUBKEY_ADDRESS
 global SCRIPT_ADDRESS
-
-PUBKEY_ADDRESS = 50 
-SCRIPT_ADDRESS = 5 
+PUBKEY_ADDRESS = 50
+SCRIPT_ADDRESS = 5
 
 def rev_hex(s):
     return s.decode('hex')[::-1].encode('hex')
@@ -41,8 +39,17 @@ def int_to_hex(i, length=1):
     s = "0"*(2*length - len(s)) + s
     return rev_hex(s)
 
-# MXT's X13 Function
-HashX13 = lambda x: mxthash.getPoWHash(x)
+
+def var_int(i):
+    if i < 0xfd:
+        return int_to_hex(i)
+    elif i <= 0xffff:
+        return "fd" + int_to_hex(i, 2)
+    elif i <= 0xffffffff:
+        return "fe" + int_to_hex(i, 4)
+    else:
+        return "ff" + int_to_hex(i, 8)
+
 
 Hash = lambda x: hashlib.sha256(hashlib.sha256(x).digest()).digest()
 
@@ -224,7 +231,7 @@ def timestr():
 import logging
 import logging.handlers
 
-logger = logging.getLogger('electrum-mxt')
+logger = logging.getLogger('electrum-martexcoin')
 
 def init_logger(logfile):
     hdlr = logging.handlers.WatchedFileHandler(logfile)
@@ -239,18 +246,3 @@ def print_log(*args):
 
 def print_warning(message):
     logger.warning(message)
-
-
-# profiler
-class ProfiledThread(threading.Thread):
-    def __init__(self, filename, target):
-        self.filename = filename
-        threading.Thread.__init__(self, target = target)
-
-    def run(self):
-        import cProfile
-        profiler = cProfile.Profile()
-        profiler.enable()
-        threading.Thread.run(self)
-        profiler.disable()
-        profiler.dump_stats(self.filename)

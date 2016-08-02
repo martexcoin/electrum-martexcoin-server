@@ -12,7 +12,6 @@ from utils import print_log, logger
 
 READ_ONLY = select.POLLIN | select.POLLPRI | select.POLLHUP | select.POLLERR
 READ_WRITE = READ_ONLY | select.POLLOUT
-WRITE_ONLY = select.POLLOUT
 TIMEOUT = 100
 
 import ssl
@@ -43,7 +42,7 @@ class TcpSession(Session):
         self.message = ''
         self.retry_msg = ''
         self.handshake = not self.use_ssl
-        self.mode = None
+        self.need_write = True
 
     def connection(self):
         if self.stopped():
@@ -65,6 +64,8 @@ class TcpSession(Session):
         except BaseException as e:
             logger.error('send_response:' + str(e))
             return
+        if self.response_queue.empty():
+            self.need_write = True
         self.response_queue.put(msg)
 
     def parse_message(self):
@@ -108,17 +109,21 @@ class TcpServer(threading.Thread):
         except:
             session.send_response({"error": "bad JSON"})
             return True
+
         try:
             # Try to load vital fields, and return an error if
             # unsuccessful.
             message_id = command['id']
             method = command['method']
-        except:
+        except KeyError:
             # Return an error JSON in response.
             session.send_response({"error": "syntax error", "request": raw_command})
         else:
-            #print_log("new request", command)
             self.dispatcher.push_request(session, command)
+            ## sleep a bit to prevent a single session from DOSing the queue
+            #time.sleep(0.01)
+
+
 
 
 
@@ -175,7 +180,7 @@ class TcpServer(threading.Thread):
                     poller.modify(session.raw_connection, READ_WRITE)
                     return
                 else:
-                    raise BaseException(str(err))
+                    raise
             poller.modify(session.raw_connection, READ_ONLY)
             session.handshake = True
 
@@ -198,40 +203,22 @@ class TcpServer(threading.Thread):
             else:
                 now = time.time()
                 for fd, session in self.fd_to_session.items():
-                    # Anti-DOS: wait 0.01 second between requests
-                    if now - session.time > 0.01 and session.message:
-                        cmd = session.parse_message()
-                        if not cmd:
-                            break
-                        if cmd == 'quit':
-                            data = False
-                            break
-                        session.time = now
-                        self.handle_command(cmd, session)
-
-                    # Anti-DOS: Stop reading if the session does not read responses 
-                    if session.response_queue.empty():
-                        mode = READ_ONLY
-                    elif session.response_queue.qsize() < 200:
-                        mode = READ_WRITE
-                    else:
-                        mode = WRITE_ONLY
-                    if mode != session.mode:
-                        poller.modify(session.raw_connection, mode)
-                        session.mode = mode
-
-                    # Collect garbage
+                    # check sessions that need to write
+                    if session.need_write:
+                        poller.modify(session.raw_connection, READ_WRITE)
+                        session.need_write = False
+                    # collect garbage
                     if now - session.time > session.timeout:
                         stop_session(fd)
 
                 events = poller.poll(TIMEOUT)
 
             for fd, flag in events:
-                # open new session
+
                 if fd == sock_fd:
                     if flag & (select.POLLIN | select.POLLPRI):
+                        connection, address = sock.accept()
                         try:
-                            connection, address = sock.accept()
                             session = TcpSession(self.dispatcher, connection, address, 
                                                  use_ssl=self.use_ssl, ssl_certfile=self.ssl_certfile, ssl_keyfile=self.ssl_keyfile)
                         except BaseException as e:
@@ -239,25 +226,25 @@ class TcpServer(threading.Thread):
                             connection.close()
                             continue
                         connection = session._connection
-                        connection.setblocking(False)
+                        connection.setblocking(0)
                         self.fd_to_session[connection.fileno()] = session
                         poller.register(connection, READ_ONLY)
+                        try:
+                            check_do_handshake(session)
+                        except BaseException as e:
+                            logger.error('handshake failure:' + str(e) + ' ' + repr(address))
+                            stop_session(connection.fileno())
                     continue
-                # existing session
+
                 session = self.fd_to_session[fd]
                 s = session._connection
-                # non-blocking handshake
                 try:
                     check_do_handshake(session)
-                except BaseException as e:
-                    #logger.error('handshake failure:' + str(e) + ' ' + repr(session.address))
+                except:
                     stop_session(fd)
                     continue
-                # anti DOS
-                now = time.time()
-                if now - session.time < 0.01:
-                    continue
-                # Read input messages.
+
+                # handle inputs
                 if flag & (select.POLLIN | select.POLLPRI):
                     try:
                         data = s.recv(self.buffer_size)
@@ -274,21 +261,24 @@ class TcpServer(threading.Thread):
                             logger.error('recv error: ' + repr(x) +' %d'%fd)
                         stop_session(fd)
                         continue
-                    except ValueError as e:
-                        logger.error('recv error: ' + str(e) +' %d'%fd)
-                        stop_session(fd)
-                        continue
                     if data:
-                        session.message += data
                         if len(data) == self.buffer_size:
-                            redo.append((fd, flag))
-                        
+                            redo.append( (fd, flag) )
+                        session.message += data
+                        while True:
+                            cmd = session.parse_message()
+                            if not cmd: 
+                                break
+                            if cmd == 'quit':
+                                data = False
+                                break
+                            self.handle_command(cmd, session)
                     if not data:
                         stop_session(fd)
                         continue
 
                 elif flag & select.POLLHUP:
-                    print_log('client hung up', session.address)
+                    print_log('client hung up', address)
                     stop_session(fd)
 
                 elif flag & select.POLLOUT:
@@ -299,6 +289,8 @@ class TcpServer(threading.Thread):
                         try:
                             next_msg = session.response_queue.get_nowait()
                         except queue.Empty:
+                            # No messages waiting so stop checking for writability.
+                            poller.modify(s, READ_ONLY)
                             continue
                     try:
                         sent = s.send(next_msg)
@@ -315,6 +307,3 @@ class TcpServer(threading.Thread):
                 elif flag & select.POLLNVAL:
                     print_log('invalid request', session.address)
                     stop_session(fd)
-
-
-        print_log('TCP thread terminating', self.shared.stopped())

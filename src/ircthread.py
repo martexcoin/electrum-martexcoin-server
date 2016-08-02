@@ -67,7 +67,7 @@ class IrcThread(threading.Thread):
         threading.Thread.start(self)
  
     def on_connect(self, connection, event):
-        connection.join("#electrum-ltc")
+        connection.join("#electrum-martexcoin")
 
     def on_join(self, connection, event):
         m = re.match("(EL_.*)!", event.source)
@@ -93,8 +93,8 @@ class IrcThread(threading.Thread):
         try:
             ip = socket.gethostbyname(line[1])
         except:
-            # no IPv4 address could be resolved. Could be .onion or IPv6.
-            ip = line[1]
+            logger.error("gethostbyname error " + line[1])
+            return
         nick = event.arguments[4]
         host = line[1]
         ports = line[2:]

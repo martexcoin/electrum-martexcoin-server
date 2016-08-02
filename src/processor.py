@@ -66,8 +66,6 @@ class Processor(threading.Thread):
                 msg_id = request.get('id')
             except:
                 continue
-            if session.stopped():
-                continue
             try:
                 result = self.process(request)
                 self.push_response(session, {'id': msg_id, 'result': result})
@@ -253,7 +251,6 @@ class Session:
 
         if len(self.subscriptions) > self.max_subscriptions:
             print_log("max subscriptions reached", self.address)
-            self.stop()
             return False
 
         # append to self.subscriptions only if this does not raise
