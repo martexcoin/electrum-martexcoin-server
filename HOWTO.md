@@ -193,7 +193,7 @@ The "configure" script above will offer you to download a database with pruning 
 
 You can fetch recent copies of electrum leveldb databases with differnt pruning limits 
 and further instructions from the Electrum-MarteXcoin full archival server foundry at:
-http://foundry.electrum-mxt.org/leveldb-dump/
+http://electrum.martexcoin.org/leveldb-dump/
 
 
 Alternatively, if you have the time and nerve, you can import the blockchain yourself.
