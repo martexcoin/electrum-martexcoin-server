@@ -1,8 +1,8 @@
 [server]
 # username for running the daemon
-username = martexcoin
+username = electrum
 # hostname. set it to a FQDN in order to be reached from outside
-host = electrum.martexcoin.org
+host = mobile.martexcoin.org
 # ports
 electrum_rpc_port = 8000
 stratum_tcp_port = 50001
@@ -17,17 +17,17 @@ irc_nick = electrum-martexcoin
 #ssl_certfile = /path/to/electrum-server.crt
 #ssl_keyfile = /path/to/electrum-server.key
 logfile = /var/log/electrum-martexcoin.log
-donation_address = MLtkuwyR61xEkWkt7KLCnDd4qTCyzoAMS3
+donation_address = PERu7znBafHURsxR749mQ2Teu6E8j95mct
 
 [leveldb]
 # path to your database
-path = /var/electrum-martexcoin-server
+path = /var/www/html
 # for each address, history will be pruned if it is longer than this limit
 pruning_limit = 10000
 
 [bitcoind]
 bitcoind_host = localhost
-bitcoind_port = 51324
+bitcoind_port = 59060
 # user and password from martexcoin.conf
 bitcoind_user = test
 bitcoind_password = password

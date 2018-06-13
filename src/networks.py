@@ -4,11 +4,11 @@ params = {
     'martexcoin_main': {
         'pubkey_address': 50,
         'script_address': 5,
-        'genesis_hash': '81f998298dc023c13c9b7948f75cd1ab90b30d7f9d753e7dbdbfb3b00b193e3b'
+        'genesis_hash': '617fc383b07fbab3505213b41fe34f9705b92d854a9f72593cb616e4726e155c'
     },
     'martexcoin_test': {
         'pubkey_address': 111,
         'script_address': 196,
-        'genesis_hash': '0000bb718576edb7039081063593e532f965022430ba18fae246973715c2afc7'
+        'genesis_hash': 'be10a5eb2ff7c7f2c958826bc773b05748cf3c8c851744425e1af311ed36e502'
     }
 }

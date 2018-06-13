@@ -351,7 +351,7 @@ def get_address_from_input_script(bytes):
     try:
         decoded = [ x for x in script_GetOp(bytes) ]
     except:
-        # coinbase transactions raise an exception                                                                  
+        # coinbase transactions raise an exception                                                                                                                 
         return [], [], None
 
     # non-generated TxIn transactions push a signature

@@ -32,11 +32,11 @@ fi
 # read username
 user=$(read_config "username")
 if ! [ "$user" ]; then
-    read -p "username for running daemon (default: martexcoin) " -r
+    read -p "username for running daemon (default: electrum) " -r
     if [ $REPLY ]; then
 	user=$REPLY
     else
-	user="martexcoin"
+	user="electrum"
     fi 
     write_config "username" $user
 fi
@@ -91,7 +91,7 @@ if [ ! -d $path ]; then
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
 	mkdir -p $path
-	wget -O - "http://electrum.martexcoin.org/leveldb-dump/electrum-fulltree-100-latest.tar.gz" | tar --extract --gunzip --strip-components 1 --directory $path --file -
+	wget -O - "http://www.martexcoin.org/leveldb-dump/electrum-fulltree-100-latest.tar.gz" | tar --extract --gunzip --strip-components 1 --directory $path --file -
     fi
 fi
 

@@ -44,10 +44,10 @@ logging.basicConfig()
 if sys.maxsize <= 2**32:
     print "Warning: it looks like you are using a 32bit system. You may experience crashes caused by mmap"
 
-if os.getuid() == 0:
-    print "Do not run this program as root!"
-    print "Run the install script to create a non-privileged user."
-    sys.exit()
+#if os.getuid() == 0:
+#    print "Do not run this program as root!"
+#    print "Run the install script to create a non-privileged user."
+#    sys.exit()
 
 def attempt_read_config(config, filename):
     try:
@@ -100,7 +100,7 @@ def create_config(filename=None):
     config.set('server', 'irc_nick', '')
     config.set('server', 'coin', 'martexcoin')
     config.set('server', 'logfile', '/var/log/electrum-martexcoin.log')
-    config.set('server', 'donation_address', 'MLtkuwyR61xEkWkt7KLCnDd4qTCyzoAMS3')
+    config.set('server', 'donation_address', 'PERu7znBafHURsxR749mQ2Teu6E8j95mct')
     config.set('server', 'max_subscriptions', '10000')
 
     config.add_section('leveldb')

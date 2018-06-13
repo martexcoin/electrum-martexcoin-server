@@ -6,7 +6,7 @@ electrum-martexcoin-server for the electrum martexcoin client
   * Author: Thomas Voegtlin (Bitcoin Electrum Creator) & Marciano Valverde (MarteXcoin Fork)
   * Language: Python
 
-## MarteXcoin Homepage: http://martexcoin.org/
+## MarteXcoin Electrum Homepage: http://www.martexcoin.org/electrum
 
 Features
 --------
@@ -15,7 +15,7 @@ Features
     described by Alan Reiner (see the 'ultimate blockchain
     compression' thread in the Bitcointalk forum)
 
-  * The server requires martexcoind v2.5.4.2 or above, leveldb and plyvel
+  * The server requires martexcoind v2.7.1.0 or above, leveldb and plyvel
 
   * The server code is open source. Anyone can run a server, removing
     single points of failure concerns.

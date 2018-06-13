@@ -23,8 +23,8 @@ setup(
         'electrummartexcoinserver.stratum_http'
     ],
     description="MarteXcoin Electrum Server",
-    author="Thomas Voegtlin & Marciano Valverde",
-    author_email="thomasv1@gmx.de/marcianovc@gmai.com",
+    author="Marciano Valverde",
+    author_email="marcianovc@martexcoin.org",
     license="GNU Affero GPLv3",
     url="https://github.com/martexcoin/electrum-martexcoin-server/",
     long_description="""Server for the Electrum Lightweight MarteXcoin Wallet"""

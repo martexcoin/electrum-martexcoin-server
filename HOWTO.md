@@ -89,28 +89,30 @@ to your `.bashrc`, `.profile`, or `.bash_profile`, then logout and relogin:
 
 ### Step 2. Download martexcoind
 
-We currently recommend martexcoind 2.5.4.2 stable.
+We currently recommend martexcoind 0.10.1.3 or 0.8.7.5 stable.
 
 If you prefer to compile martexcoind, here are some pointers for Ubuntu:
 
     $ sudo apt-get install make g++ python-leveldb libboost-all-dev libssl-dev libdb++-dev pkg-config automake libtool
     $ sudo su - martexcoin
-    $ cd ~/src && git clone https://github.com/martexcoin/martexcoin
-    $ cd martexcoin/src
-    $ make -f makefile.unix USE_UPNP=-
-    $ strip MartexCoind
-    $ cp -a MartexCoind ~/bin
+    $ cd ~/src && git clone https://github.com/martexcoin-project/martexcoin.git -b master-0.10
+    $ cd martexcoin
+    $ ./autogen.sh
+    $ ./configure --disable-wallet --without-miniupnpc
+    $ make
+    $ strip src/martexcoind src/martexcoin-cli src/martexcoin-tx
+    $ cp -a src/martexcoind src/martexcoin-cli src/martexcoin-tx ~/bin
 
-### Step 3. Configure and start MartexCoind
+### Step 3. Configure and start martexcoind
 
-In order to allow Electrum to "talk" to `MartexCoind`, we need to set up an RPC
-username and password for `MartexCoind`. We will then start `MartexCoind` and
+In order to allow Electrum to "talk" to `martexcoind`, we need to set up an RPC
+username and password for `martexcoind`. We will then start `martexcoind` and
 wait for it to complete downloading the blockchain.
 
-    $ mkdir ~/.MartexCoin
-    $ $EDITOR ~/.MartexCoin/MartexCoin.conf
+    $ mkdir ~/.martexcoin
+    $ $EDITOR ~/.martexcoin/martexcoin.conf
 
-Write this in `MartexCoin.conf`:
+Write this in `martexcoin.conf`:
 
     rpcuser=<rpc-username>
     rpcpassword=<rpc-password>
@@ -119,23 +121,23 @@ Write this in `MartexCoin.conf`:
     disablewallet=1
 
 
-If you have an existing installation of MartexCoind and have not previously
+If you have an existing installation of martexcoind and have not previously
 set txindex=1 you need to reindex the blockchain by running
 
-    $ MartexCoind -reindex
+    $ martexcoind -reindex
 
-If you already have a freshly indexed copy of the blockchain with txindex start `MartexCoind`:
+If you already have a freshly indexed copy of the blockchain with txindex start `martexcoind`:
 
-    $ MartexCoind
+    $ martexcoind
 
-Allow some time to pass, so `MartexCoind` connects to the network and starts
+Allow some time to pass, so `martexcoind` connects to the network and starts
 downloading blocks. You can check its progress by running:
 
-    $ MartexCoind getinfo
+    $ martexcoin-cli getinfo
 
-Before starting the electrum server your MartexCoind should have processed all
+Before starting the electrum server your martexcoind should have processed all
 blocks and caught up to the current height of the network (not just the headers).
-You should also set up your system to automatically start MartexCoind at boot
+You should also set up your system to automatically start martexcoind at boot
 time, running as the 'martexcoin' user. Check your system documentation to
 find out the best way to do this.
 
@@ -192,8 +194,8 @@ It's recommended to fetch a pre-processed leveldb from the net.
 The "configure" script above will offer you to download a database with pruning limit 100.
 
 You can fetch recent copies of electrum leveldb databases with differnt pruning limits 
-and further instructions from the Electrum-MarteXcoin full archival server foundry at:
-http://electrum.martexcoin.org/leveldb-dump/
+and further instructions from the Electrum-LTC full archival server foundry at:
+http://foundry.electrum-martexcoin.org/leveldb-dump/
 
 
 Alternatively, if you have the time and nerve, you can import the blockchain yourself.
@@ -262,7 +264,7 @@ in case you need to restore it.
 ### Step 9. Configure Electrum server
 
 Electrum reads a config file (/etc/electrum-martexcoin.conf) when starting up. This
-file includes the database setup, MartexCoind RPC setup, and a few other
+file includes the database setup, martexcoind RPC setup, and a few other
 options.
 
 The "configure" script listed above will create a config file at /etc/electrum-martexcoin.conf
@@ -286,9 +288,9 @@ the following code to add the limits to your /etc/security/limits.conf:
 
 Two more things for you to consider:
 
-1. To increase security you may want to close MartexCoind for incoming connections and connect outbound only
+1. To increase security you may want to close martexcoind for incoming connections and connect outbound only
 
-2. Consider restarting MartexCoind (together with electrum-martexcoin-server) on a weekly basis to clear out unconfirmed
+2. Consider restarting martexcoind (together with electrum-martexcoin-server) on a weekly basis to clear out unconfirmed
    transactions from the local the memory pool which did not propagate over the network.
 
 ### Step 11. (Finally!) Run Electrum server
@@ -333,10 +335,10 @@ martexcoins to confirm that everything is working properly.
 
 Say hi to the dev crew, other server operators, and fans on
 irc.freenode.net #electrum-martexcoin and we'll try to congratulate you
-on supporting the community by running an Electrum-MarteXcoin node.
+on supporting the community by running an Electrum-LTC node.
 
-If you're operating a public Electrum-MarteXcoin server please subscribe
+If you're operating a public Electrum-LTC server please subscribe
 to the following mailing list:
 https://groups.google.com/forum/#!forum/electrum-martexcoin-server
-It'll contain announcements about important updates to Electrum-MarteXcoin
+It'll contain announcements about important updates to Electrum-LTC
 server required for a smooth user experience.

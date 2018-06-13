@@ -8,7 +8,7 @@ from processor import print_log, logger
 from utils import bc_address_to_hash_160, hash_160_to_pubkey_address, hex_to_int, int_to_hex, Hash
 
 global GENESIS_HASH
-GENESIS_HASH = '81f998298dc023c13c9b7948f75cd1ab90b30d7f9d753e7dbdbfb3b00b193e3b'
+GENESIS_HASH = '617fc383b07fbab3505213b41fe34f9705b92d854a9f72593cb616e4726e155c'
 
 """
 Patricia tree for hashing unspents
